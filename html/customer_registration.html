@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer | Registration</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\registration-box.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a href="manufacturer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="seller.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a style="background: pink;" href="customer.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="registration-box">
+      <h2>Customer Registration</h2>
+      <form id="registration-form">
+        <input type="text" id="customer-name" placeholder="Customer name" required>
+        <input type="text" id="customer-id" placeholder="Customer ID" required>
+        <input type="text" id="customer-phone-number" placeholder="Phone number" required>
+        <input type="email" id="customer-email" placeholder="Email ID" required>
+        <input type="text" id="customer-address" placeholder="Address" required>
+        <input type="text" id="customer-wallet" placeholder="Crypto wallet address" required>
+        <input type="password" id="customer-password" placeholder="Password" required>
+        <button type="submit" onclick="registerCustomer()">Register</button>
+      </form>
+      <p>Already have an account? <a href="customer.html">Login</a></p>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function registerCustomer() {
+      // Retrieve all input values
+      var custname = document.getElementById("customer-name").value;
+      var custid = document.getElementById("customer-id").value;
+      var custphno = document.getElementById("customer-phone-number").value;
+      var custemail = document.getElementById("customer-email").value;
+      var custadd = document.getElementById("customer-address").value;
+      var custcryptadd = document.getElementById("customer-wallet").value;
+      var custpass = document.getElementById("customer-password").value;
+
+      // Check if any input field is blank
+      if (
+        custname === "" ||
+        custid === "" ||
+        custphno === "" ||
+        custemail === "" ||
+        custadd === "" ||
+        custcryptadd === "" ||
+        custpass === ""
+      ) {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored customers from local storage
+      var customers = JSON.parse(localStorage.getItem("CUSTOMERS")) || [];
+
+      // Check if customer with the same ID already exists
+      var existingCustomer = customers.find(function (customer) {
+        return customer.cust_id === custid;
+      });
+
+      if (existingCustomer) {
+        alert("Customer with the same ID already exists. Please choose a different Customer ID.");
+      } else {
+        // Create an array to store customer details
+        var newCustomer = {
+          cust_name: custname,
+          cust_id: custid,
+          cust_phno: custphno,
+          cust_email: custemail,
+          cust_address: custadd,
+          cust_wallet_address: custcryptadd,
+          cust_password: custpass,
+        };
+
+        customers.push(newCustomer);
+
+        // Store the updated array in local storage
+        localStorage.setItem("CUSTOMERS", JSON.stringify(customers));
+
+        // Clear the form inputs
+        document.getElementById("registration-form").reset();
+
+        alert("Registration is successful. You can now log in.");
+
+        // Redirect to the login page
+        window.location.href = "customer.html";
+      }
+    }
+  </script>
+</body>
+
+</html>

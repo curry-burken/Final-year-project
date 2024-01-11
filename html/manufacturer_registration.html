@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Manufacturer | Registration</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\registration-box.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a style="background: pink;" href="manufacturer.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="seller.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="customer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="registration-box">
+      <h2>Manufacturer Registration</h2>
+      <form id="registration-form">
+        <input type="text" id="manufacturer-name" placeholder="Manufacturer name" required>
+        <input type="text" id="manufacturer-id" placeholder="Manufacturer ID" required>
+        <input type="text" id="phone-number" placeholder="Phone number" required>
+        <input type="email" id="email" placeholder="Email ID" required>
+        <input type="text" id="address" placeholder="Address" required>
+        <input type="text" id="wallet" placeholder="Crypto wallet address" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" onclick="registerManufacturer()">Register</button>
+      </form>
+      <p>Already have an account? <a href="manufacturer.html">Login</a></p>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function registerManufacturer() {
+      // Retrieve all input values
+      var manuname = document.getElementById("manufacturer-name").value;
+      var manuid = document.getElementById("manufacturer-id").value;
+      var manuphno = document.getElementById("phone-number").value;
+      var manuemail = document.getElementById("email").value;
+      var manuadd = document.getElementById("address").value;
+      var manucryptadd = document.getElementById("wallet").value;
+      var manupass = document.getElementById("password").value;
+
+      // Check if any input field is blank
+      if (
+        manuname === "" ||
+        manuid === "" ||
+        manuphno === "" ||
+        manuemail === "" ||
+        manuadd === "" ||
+        manucryptadd === "" ||
+        manupass === ""
+      ) {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored manufacturers from local storage
+      var manufacturers = JSON.parse(localStorage.getItem("MANUFACTURERS")) || [];
+
+      // Check if manufacturer with the same ID already exists
+      var existingManufacturer = manufacturers.find(function (manufacturer) {
+        return manufacturer.manu_id === manuid;
+      });
+
+      if (existingManufacturer) {
+        alert(
+          "Manufacturer with the same ID already exists. Please choose a different Manufacturer ID."
+        );
+      } else {
+        // Create an array to store manufacturer details
+        var newManufacturer = {
+          manu_name: manuname,
+          manu_id: manuid,
+          manu_phno: manuphno,
+          manu_email: manuemail,
+          manu_address: manuadd,
+          manu_wallet_address: manucryptadd,
+          manu_password: manupass,
+        };
+
+        manufacturers.push(newManufacturer);
+
+        // Store the updated array in local storage
+        localStorage.setItem("MANUFACTURERS", JSON.stringify(manufacturers));
+
+        // Clear the form inputs
+        document.getElementById("registration-form").reset();
+
+        alert("Registration is successful. You can now log in.");
+
+        // Redirect to the login page
+        window.location.href = "manufacturer.html";
+      }
+    }
+  </script>
+</body>
+
+</html>

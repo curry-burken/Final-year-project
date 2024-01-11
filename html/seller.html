@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Seller | Login</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\login-box.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a href="manufacturer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a style="background: pink;" href="seller.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="customer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="login-box">
+      <h2>Login as a Seller</h2>
+      <form id="login-form">
+        <input type="text" id="sellelogin-id" placeholder="Seller ID" required>
+        <input type="password" id="sellelogin-password" placeholder="Password" required>
+        <button type="submit" onclick="verifySellerLogin()">Login</button>
+      </form>
+      <p><a href="seller_registration.html">Register as a new seller</a></p>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function verifySellerLogin() {
+      // Getting login id and password from above HTML
+      var loginselleid = document.getElementById("sellelogin-id").value;
+      var loginsellepass = document.getElementById("sellelogin-password").value;
+
+      // Check if any input field is blank
+      if (
+        loginselleid === "" ||
+        loginsellepass === "") {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored sellers from local storage
+      var sellers = JSON.parse(localStorage.getItem("SELLERS")) || [];
+
+      // Check if a seller with the provided ID and password exists
+      var authenticatedSeller = sellers.find(function (seller) {
+        return seller.selle_id === loginselleid && seller.selle_password === loginsellepass;
+      });
+
+      if (authenticatedSeller) {
+        localStorage.setItem("LoggedInSellerID", loginselleid);
+        alert("Successfully logged in.");
+        let new_window = open("seller_module.html", "_blank");
+        window.close();
+      }
+      else {
+        // Display an alert for failed login
+        alert("Invalid Seller ID or Password. Please try again.");
+      }
+    }
+  </script>
+</body>
+
+</html>

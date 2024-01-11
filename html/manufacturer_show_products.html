@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manufacturer | Show Products</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\products-display.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a style="background: pink;" href="manufacturer.html" target="_self">
+          <i class="bx bx-user"  style="color:#11101D;"></i>
+          <span>Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="seller.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="customer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="products-table-container">
+      <h2>Manufacturer Product Inventory</h2>
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Manufacturer ID</th>
+            <th>Product Name</th>
+            <th>Product Type</th>
+            <th>Product Code</th>
+            <th>Batch Number</th>
+            <th>Product Price in ETH</th>
+            <th>Manufacturing Date</th>
+            <th>Expiry Date</th>
+            <th>Product Current Owner</th>
+          </tr>
+        </thead>
+        <tbody id="product-table-body">
+          <!-- Product rows will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- JavaScript to populate the product table -->
+  <script>
+    // Retrieve logged-in manufacturer ID
+    var loggedInManufacturerID = localStorage.getItem("LoggedInManufacturerID");
+
+    // Retrieve stored products from local storage
+    var products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
+    
+    // Reference to the table body
+    var tableBody = document.getElementById("product-table-body");
+
+    // Iterate through products and append rows to the table for the logged-in manufacturer
+    products.forEach(function(product) {
+      if (product.manufacturer_id === loggedInManufacturerID) {
+        var row = tableBody.insertRow();
+        row.insertCell(0).textContent = product.manufacturer_id;
+        row.insertCell(1).textContent = product.prod_name;
+        row.insertCell(2).textContent = product.prod_type;
+        row.insertCell(3).textContent = product.prod_code;
+        row.insertCell(4).textContent = product.prod_batch_no;
+        row.insertCell(5).textContent = product.prod_price;
+        row.insertCell(6).textContent = product.prod_manufacturing_Date;
+        row.insertCell(7).textContent = product.prod_expiry_Date;
+        row.insertCell(8).textContent = product.prod_current_owner;
+      }
+    });
+  </script>
+</body>
+</html>

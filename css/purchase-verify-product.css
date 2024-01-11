@@ -1,0 +1,128 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* Home Section Styles */
+.home-section .purchase-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.home-section .purchase-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.home-section .purchase-box form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.home-section .purchase-box form button {
+    background: #11101D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Styles for the new verification result box */
+.home-section .verification-result-box {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.home-section .verification-result-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.home-section .verification-result-box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.home-section .verification-result-box table,
+.home-section .verification-result-box th,
+.home-section .verification-result-box td {
+    border: 1px solid #ddd;
+}
+
+.home-section .verification-result-box th,
+.home-section .verification-result-box td {
+    padding: 8px;
+    text-align: left;
+}
+
+.home-section .verification-result-box p {
+    margin-top: 10px;
+}
+
+/* Additional Styles for the product details box within the purchase-box */
+.home-section .purchase-box #product-details-box {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.home-section .purchase-box #product-details-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.home-section .purchase-box #product-details-box table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.home-section .purchase-box #product-details-box table,
+.home-section .purchase-box #product-details-box th,
+.home-section .purchase-box #product-details-box td {
+    border: 1px solid #ddd;
+}
+
+.home-section .purchase-box #product-details-box th,
+.home-section .purchase-box #product-details-box td {
+    padding: 8px;
+    text-align: left;
+}
+
+.home-section .purchase-box #product-details-box p {
+    margin-top: 10px;
+}
+
+.verify-button {
+    background: #11101D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+    display: block;
+    margin: 10px auto;
+}

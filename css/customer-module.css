@@ -1,0 +1,52 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.home-section .options-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.home-section .option {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+    /* Set the width to make all option boxes the same size */
+    height: 300px;
+    /* Set the height to make all option boxes the same size */
+    margin: 20px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.home-section .option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.home-section .option i {
+    font-size: 48px;
+    color: #11101D;
+}
+
+.home-section .option h3 {
+    font-size: 24px;
+    color: #11101D;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .home-section .options-box {
+        max-width: 100%;
+    }
+
+    .home-section .option {
+        width: 100%;
+    }
+}

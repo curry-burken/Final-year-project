@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Customer | Login</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\login-box.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a href="manufacturer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="seller.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a style="background: pink;" href="customer.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="login-box">
+      <h2>Login as a Customer</h2>
+      <form id="login-form">
+        <input type="text" id="custlogin-id" placeholder="Customer ID" required>
+        <input type="password" id="custlogin-password" placeholder="Password" required>
+        <button type="submit" onclick="verifyCustomerLogin()">Login</button>
+      </form>
+      <p><a href="customer_registration.html">Register as a new customer</a></p>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function verifyCustomerLogin() {
+      // Getting login id and password from above HTML
+      var logincustid = document.getElementById("custlogin-id").value;
+      var logincustpass = document.getElementById("custlogin-password").value;
+
+      // Check if any input field is blank
+      if (
+        logincustid === "" ||
+        logincustpass === "") {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored customers from local storage
+      var customers = JSON.parse(localStorage.getItem("CUSTOMERS")) || [];
+
+      // Check if a customer with the provided ID and password exists
+      var authenticatedCustomer = customers.find(function (customer) {
+        return customer.cust_id === logincustid && customer.cust_password === logincustpass;
+      });
+
+      if (authenticatedCustomer) {
+        localStorage.setItem("LoggedInCustomerID", logincustid);
+        alert("Successfully logged in.");
+        let new_window = open("customer_module.html", "_blank");
+        window.close();
+      }
+      else {
+        // Display an alert for failed login
+        alert("Invalid Customer ID or Password. Please try again.");
+      }
+    }
+  </script>
+</body>
+
+</html>

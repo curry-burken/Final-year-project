@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Manufacturer | Add Product</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\manufacturer-add-product.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a style="background: pink;" href="manufacturer.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="seller.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="customer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="product-form">
+      <h2>Add Pharmaceutical Product Details</h2>
+      <form id="product-details-form">
+        <input type="text" id="product-name" placeholder="Product name" required>
+        <input type="text" id="product-type" placeholder="Product type" required>
+        <input type="text" id="product-code" placeholder="Product code" required>
+        <input type="text" id="batch-number" placeholder="Product batch number" required>
+        <input type="text" id="product-price" placeholder="Product price in ETH" required>
+        <input type="text" id="manufacturing-date" placeholder="Date of manufacturing (DD-MM-YYYY)" required>
+        <input type="text" id="expiry-date" placeholder="Date of expiry (DD-MM-YYYY)" required>
+        <div align="center"><button type="button" onclick="addProduct()">Add Product</button></div>
+        <br>
+        <img align="center" hidden id="imgQR" src="" alt="QR code">
+        <br>
+        <div align="center">
+          <button align="center" id="download" style="display: none;" type="button" onclick="saveImage()">Download QR
+            Code</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function addProduct() {
+      // Get product details
+      var productName = document.getElementById("product-name").value;
+      var productType = document.getElementById("product-type").value;
+      var productCode = document.getElementById("product-code").value;
+      var batchNumber = document.getElementById("batch-number").value;
+      var productPrice = document.getElementById("product-price").value;
+      var manufacturingDate = document.getElementById("manufacturing-date").value;
+      var expiryDate = document.getElementById("expiry-date").value;
+
+      // Check if any input field is blank
+      if (
+        productName === "" ||
+        productType === "" ||
+        productCode === "" ||
+        batchNumber === "" ||
+        productPrice === "" ||
+        manufacturingDate === "" ||
+        expiryDate === "") {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored products from local storage
+      var products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
+
+      // Check if product with the same ID already exists
+      var existingProduct = products.find(function (product) {
+        return product.prod_code === productCode;
+      });
+
+      if (existingProduct) {
+        alert("Product with the same code already exists. Please choose a different product code.");
+        return;
+      }
+
+      // Getting logged in manufacturer id to map product to its manufacturer 
+      var manufacturerId = localStorage.getItem("LoggedInManufacturerID");
+
+      var manufacturers = JSON.parse(localStorage.getItem("MANUFACTURERS")) || [];
+      var matchingManufacturer = manufacturers.find(function (manufacturer) {
+        return manufacturer.manu_id === manufacturerId;
+      });
+
+      // Create an object to store product details
+      var newProduct = {
+        manufacturer_id: manufacturerId,
+        prod_current_owner: matchingManufacturer.manu_name + " - MANUFACTURER",
+        prod_name: productName,
+        prod_type: productType,
+        prod_code: productCode,
+        prod_batch_no: batchNumber,
+        prod_price: productPrice,
+        prod_manufacturing_Date: manufacturingDate,
+        prod_expiry_Date: expiryDate,
+        prod_manu_status: 1,
+        prod_selle_status: 0,
+        prod_cust_status: 0
+      };
+
+
+
+      // Push the new product to the array
+      products.push(newProduct);
+
+      // Store the updated array in local storage
+      localStorage.setItem("PRODUCTS", JSON.stringify(products));
+
+      // Generate QR code
+      var qrValue1 = manufacturerId;
+      var qrValue2 = productName;
+      var qrValue3 = productType;
+      var qrValue4 = productCode;
+      var qrValue5 = batchNumber;
+      var qrValue6 = productPrice;
+      var qrValue7 = manufacturingDate;
+      var qrValue8 = expiryDate;
+      var imgQR = document.getElementById('imgQR');
+      imgQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=
+      MANUFACTURER: ${qrValue1}%0A
+      PRODUCT NAME: ${qrValue2}%0A
+      PRODUCT TYPE: ${qrValue3}%0A
+      PRODUCT CODE: ${qrValue4}%0A
+      BATCH NUMBER: ${qrValue5}%0A
+      PRICE IN ETH: ${qrValue6}%0A
+      MANUFACTURING DATE: ${qrValue7}%0A
+      EXPIRY DATE: ${qrValue8}`;
+
+
+      // Show the download button
+      var downloadBtn = document.getElementById("download");
+      imgQR.removeAttribute('hidden');
+      downloadBtn.style.display = "block";
+    }
+
+    function saveImage() {
+      var imgQR = document.getElementById('imgQR');
+      // Create a Blob from the QR code image
+      fetch(imgQR.src).then(response => response.blob()).then(blob => {
+        // Create a Blob URL for the image
+        var url = window.URL.createObjectURL(blob);
+        // Create a link element for downloading
+        var a = document.createElement('a');
+        a.href = url;
+        // Getting logged in manufacturer id to map product to its manufacturer 
+        var manufacturerId = localStorage.getItem("LoggedInManufacturerID");
+        var qrName1 = document.getElementById("product-code").value + " from manufacturer " + manufacturerId;
+        a.download = `Qr code of ${qrName1}.jpg`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        // Trigger a click event on the link
+        a.click();
+        // Clean up by revoking the Blob URL
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
+    }
+
+  </script>
+</body>
+
+</html>

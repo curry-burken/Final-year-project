@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Customer | Verify</title>
+    <link rel="stylesheet" href="..\css\side-bar.css" />
+    <link rel="stylesheet" href="..\css\home-section.css" />
+    <link rel="stylesheet" href="..\css\verify-product.css" />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <script src="https://cdn.rawgit.com/cozmo/jsQR/master/dist/jsQR.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <div class="sidebar open">
+        <a href="..\index.html" class="logo-details" target="_self">
+            <p>PHARMA GUARD</p>
+        </a>
+        <ul class="nav-list">
+            <li>
+                <a href="manufacturer.html" target="_self">
+                    <i class="bx bx-user"></i>
+                    <span class="links_name">Manufacturer</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="seller.html" target="_self">
+                    <i class="bx bx-user"></i>
+                    <span class="links_name">Seller</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a style="background: pink;" href="customer.html" target="_self">
+                    <i class="bx bx-user" style="color:#11101D;"></i>
+                    <span>Customer</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ABOVE CODE IS FOR SIDEBAR -->
+    <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+    <section class="home-section">
+        <div class="purchase-box">
+            <h2>Verify Product Using QR Code</h2>
+            <form id="qr-verification-form">
+                <input type="file" id="qr-code-file" accept="image/*" required>
+                <center><button type="button" onclick="displayQRDetails()">Verify Product</button></center>
+            </form>
+            <div id="verification-result"></div>
+
+            <!-- Display product details in a table -->
+            <div id="product-details-box" style="display: none;">
+                <h2>Product Details</h2>
+                <table id="product-details-table">
+                    <!-- Table content will be dynamically populated by JavaScript -->
+                </table>
+                <p id="verification-message"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BELOW IS THE JS SCRIPT CODE -->
+
+    <script>
+        function clearProductDetailsTable() {
+            var productDetailsTable = document.getElementById('product-details-table');
+            productDetailsTable.innerHTML = ''; // Clear the contents of the table
+        }
+        function displayQRDetails() {
+            var fileInput = document.getElementById('qr-code-file');
+
+            if (fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var image = new Image();
+                    image.src = e.target.result;
+
+                    image.onload = function () {
+                        var canvas = document.createElement('canvas');
+                        var context = canvas.getContext('2d');
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+                        context.drawImage(image, 0, 0, image.width, image.height);
+
+                        var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                        var code = jsQR(imageData.data, imageData.width, imageData.height);
+
+                        if (code) {
+                            // Extracted data from QR code
+                            var qrData = code.data;
+
+                            // Split the data into individual fields
+                            var qrFields = qrData.split('\n');
+
+                            // Store values in variables
+                            var qrManu = qrFields[0].split(': ')[1];
+                            var qrProd = qrFields[1].split(': ')[1];
+                            var qrType = qrFields[2].split(': ')[1];
+                            var qrProdCode = qrFields[3].split(': ')[1];
+                            var qrBat = qrFields[4].split(': ')[1];
+                            var qrPrice = qrFields[5].split(': ')[1];
+                            var qrManuDate = qrFields[6].split(': ')[1];
+                            var qrExpDate = qrFields[7].split(': ')[1];
+
+                            // Display product details
+                            displayProductDetails({
+                                manufacturer_id: qrManu,
+                                prod_code: qrProdCode
+                            });
+                        } else {
+                            // QR code not found
+                            alert('No QR Code found in the image.');
+                        }
+                    };
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a QR code image for verification.');
+            }
+        }
+
+        function displayProductDetails(qrData) {
+
+            // Clear the contents of the table before displaying new data
+            clearProductDetailsTable();
+
+            var productDetailsBox = document.getElementById('product-details-box');
+            var productDetailsTable = document.getElementById('product-details-table');
+            var verificationMessage = document.getElementById('verification-message');
+
+            // Check local storage for a matching product
+            var products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
+
+            var matchingProduct = products.find(function (product) {
+                return product.manufacturer_id === qrData.manufacturer_id && product.prod_code === qrData.prod_code;
+            });
+
+            if (matchingProduct) {
+                var manufacturers = JSON.parse(localStorage.getItem("MANUFACTURERS")) || [];
+                var matchingManufacturer = manufacturers.find(function (manufacturer) {
+                    return manufacturer.manu_id === qrData.manufacturer_id;
+                });
+                // Populate the table with product details
+                productDetailsTable.innerHTML = `
+                    <tr><td>Manufacturer Name</td><td>${matchingManufacturer.manu_name}</td></tr>
+                    <tr><td>Product Current Owner</td><td>${matchingProduct.prod_current_owner}</td></tr>
+                    <tr><td>Product Name</td><td>${matchingProduct.prod_name}</td></tr>
+                    <tr><td>Product Type</td><td>${matchingProduct.prod_type}</td></tr>
+                    <tr><td>Product Code</td><td>${matchingProduct.prod_code}</td></tr>
+                    <tr><td>Batch Number</td><td>${matchingProduct.prod_batch_no}</td></tr>
+                    <tr><td>Price in ETH</td><td>${matchingProduct.prod_price}</td></tr>
+                    <tr><td>Manufacturing Date</td><td>${matchingProduct.prod_manufacturing_Date}</td></tr>
+                    <tr><td>Expiry Date</td><td>${matchingProduct.prod_expiry_Date}</td></tr>
+                `;
+
+                // Display the product details box
+                productDetailsBox.style.display = 'block';
+
+                // Display verification message
+                verificationMessage.textContent = 'Product is verified and it is original.';
+            } else {           
+                
+                // Display the product details box
+                productDetailsBox.style.display = 'block';
+
+                verificationMessage.textContent = 'Product not found.';
+            }
+        }
+    </script>
+</body>
+
+</html>

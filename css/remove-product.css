@@ -1,0 +1,41 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* Style the container */
+.remove-product-box {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the form elements */
+.remove-product-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.remove-product-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.remove-product-box button {
+    background: #11101D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+.remove-product-box button:hover {
+    background: #1d1b31;
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Manufacturer | Remove Product</title>
+    <link rel="stylesheet" href="..\css\side-bar.css" />
+    <link rel="stylesheet" href="..\css\home-section.css" />
+    <link rel="stylesheet" href="..\css\remove-product.css" />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <div class="sidebar open">
+        <a href="..\index.html" class="logo-details" target="_self">
+            <p>PHARMA GUARD</p>
+        </a>
+        <ul class="nav-list">
+            <li>
+                <a style="background: pink;" href="manufacturer.html" target="_self">
+                    <i class="bx bx-user" style="color:#11101D;"></i>
+                    <span>Manufacturer</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="seller.html" target="_self">
+                    <i class="bx bx-user"></i>
+                    <span class="links_name">Seller</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+            <li>
+                <a href="customer.html" target="_self">
+                    <i class="bx bx-user"></i>
+                    <span class="links_name">Customer</span>
+                </a>
+                <span class="tooltip">User</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ABOVE CODE IS FOR SIDEBAR -->
+    <!-- MAIN PAGE CONTENT -->
+    <section class="home-section">
+        <div class="remove-product-box">
+            <h2>Remove Pharmaceutical Product</h2>
+            <form id="remove-product-form">
+                <input type="text" id="product-code" placeholder="Enter Product Code" required>
+                <button type="button" onclick="removeProduct()">Remove Product</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- JavaScript to handle product removal -->
+    <script>
+        function removeProduct() {
+            // Get the product code entered by the user
+            var userEnteredCode = document.getElementById("product-code").value;
+
+            // Check if any input field is blank
+            if (
+                userEnteredCode === "") {
+                alert("Please fill in all the fields.");
+                return;
+            }
+
+            // Retrieve logged-in manufacturer ID
+            var loggedInManufacturerID = localStorage.getItem("LoggedInManufacturerID");
+
+            // Retrieve stored products from local storage
+            var products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
+
+            // Check if the product code matches for the logged-in manufacturer
+            var matchedProductIndex = products.findIndex(function (product) {
+                return product.manufacturer_id === loggedInManufacturerID && product.prod_code === userEnteredCode;
+            });
+
+            if (matchedProductIndex !== -1) {
+                // Product found, remove it
+                products.splice(matchedProductIndex, 1);
+
+                // Update local storage with the modified product list
+                localStorage.setItem("PRODUCTS", JSON.stringify(products));
+
+                // Show success alert
+                alert("Product removed successfully.");
+
+                // Redirect to manufacturer_show_products.html
+                window.location.href = "manufacturer_show_products.html";
+            } else {
+                // Product not found, show alert and refresh the page
+                alert("Product not found. Please check the product code.");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+
+</html>

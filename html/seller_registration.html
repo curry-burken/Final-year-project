@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Seller | Registration</title>
+  <link rel="stylesheet" href="..\css\side-bar.css" />
+  <link rel="stylesheet" href="..\css\home-section.css" />
+  <link rel="stylesheet" href="..\css\registration-box.css" />
+  <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <div class="sidebar open">
+    <a href="..\index.html" class="logo-details" target="_self">
+      <p>PHARMA GUARD</p>
+    </a>
+    <ul class="nav-list">
+      <li>
+        <a href="manufacturer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Manufacturer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a style="background: pink;" href="seller.html" target="_self">
+          <i class="bx bx-user" style="color:#11101D;"></i>
+          <span>Seller</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+      <li>
+        <a href="customer.html" target="_self">
+          <i class="bx bx-user"></i>
+          <span class="links_name">Customer</span>
+        </a>
+        <span class="tooltip">User</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- ABOVE CODE IS FOR SIDEBAR -->
+  <!-- BELOW IS THE MAIN PAGE CONTENT -->
+
+  <section class="home-section">
+    <div class="registration-box">
+      <h2>Seller Registration</h2>
+      <form id="registration-form">
+        <input type="text" id="seller-name" placeholder="Seller name" required>
+        <input type="text" id="seller-id" placeholder="Seller ID" required>
+        <input type="text" id="seller-store" placeholder="Store name" required>
+        <input type="text" id="seller-phone-number" placeholder="Phone number" required>
+        <input type="email" id="seller-email" placeholder="Email ID" required>
+        <input type="text" id="seller-address" placeholder="Address" required>
+        <input type="text" id="seller-wallet" placeholder="Crypto wallet address" required>
+        <input type="password" id="seller-password" placeholder="Password" required>
+        <button type="submit" onclick="registerSeller()">Register</button>
+      </form>
+      <p>Already have an account? <a href="seller.html">Login</a></p>
+    </div>
+  </section>
+
+  <!-- BELOW IS THE JS SCRIPT CODE -->
+
+  <script>
+    function registerSeller() {
+      // Retrieve all input values
+      var sellename = document.getElementById("seller-name").value;
+      var selleid = document.getElementById("seller-id").value;
+      var sellestorename = document.getElementById("seller-store").value;
+      var sellephno = document.getElementById("seller-phone-number").value;
+      var selleemail = document.getElementById("seller-email").value;
+      var selleadd = document.getElementById("seller-address").value;
+      var sellecryptadd = document.getElementById("seller-wallet").value;
+      var sellepass = document.getElementById("seller-password").value;
+
+      // Check if any input field is blank
+      if (
+        sellename === "" ||
+        selleid === "" ||
+        sellestorename === "" ||
+        sellephno === "" ||
+        selleemail === "" ||
+        selleadd === "" ||
+        sellecryptadd === "" ||
+        sellepass === ""
+      ) {
+        alert("Please fill in all the fields.");
+        return;
+      }
+
+      // Retrieve stored sellers from local storage
+      var sellers = JSON.parse(localStorage.getItem("SELLERS")) || [];
+
+      // Check if seller with the same ID already exists
+      var existingSeller = sellers.find(function (seller) {
+        return seller.selle_id === selleid;
+      });
+
+      if (existingSeller) {
+        alert("Seller with the same ID already exists. Please choose a different seller ID.");
+      } else {
+        // Create an array to store seller details
+        var newSeller = {
+          selle_name: sellename,
+          selle_id: selleid,
+          selle_store: sellestorename,
+          selle_phno: sellephno,
+          selle_email: selleemail,
+          selle_address: selleadd,
+          selle_wallet_address: sellecryptadd,
+          selle_password: sellepass,
+        };
+
+        sellers.push(newSeller);
+
+        // Store the updated array in local storage
+        localStorage.setItem("SELLERS", JSON.stringify(sellers));
+
+        // Clear the form inputs
+        document.getElementById("registration-form").reset();
+
+        alert("Registration is successful. You can now log in.");
+
+        // Redirect to the login page
+        window.location.href = "seller.html";
+      }
+    }
+  </script>
+</body>
+
+</html>
